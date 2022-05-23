@@ -1,0 +1,1453 @@
+CREATE TABLE customertype (
+    Id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Type VARCHAR(50) NOT NULL	
+);
+INSERT INTO customertype(Id,Type) VALUES
+(1,'PERMENET'),
+(2,'INTERMITTENT');
+CREATE TABLE customer (
+    CustId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    CustName VARCHAR(200) NOT NULL,
+    Cust_Phone VARCHAR(15) NOT NULL,
+    CustAdrress VARCHAR(255) NOT NULL,
+    CustType INT(11) NOT NULL,
+    FOREIGN KEY FKCustomerToCustomerType(CustType)REFERENCES customertype(Id)
+);
+INSERT INTO `customer` (`CustId`, `CustName`, `Cust_Phone`, `CustAdrress`, `CustType`) VALUES
+(1, 'Bishoy Pauls Roushy Eskarous ', '89531201781', 'Egypt-Qena',1),
+(2, 'Pauls Roushdy Eskarous', '+79351890897', 'Russia-Perm', 2),
+(3, 'Amir Salah Jackop', '+79352345897', 'Russia-Perm', 1),
+(4, 'Gergis Fathy Roushdy', '+79358765897', 'Russia-Perm', 1);
+----------------------------------------------------------------------------
+==============================================ORDER STATU========================================
+RECEIVED: The order has been delivered to the customer (تم تسليم الاوردر للعميل)
+
+NO RECEIVEDCUST : The customer did not show up on time to receive the order (العميل لم يحضر فى الموعد المحدد لاستلام الاوردر)
+
+NO RECEIVEDPHAR : The order was not delivered to the customer due to a delay from the pharmacy (لم يتم تسليم الاوردر للعميل بسبب تاخير من الصيدليه)
+
+NO RECEIVEDPHARMED : The order was not delivered to the customer due to the medicine being out of stock (لم يتم تسليم الاوردر للعميل بسبب نفاذ الدواء من المخزن)
+
+PREPARATION : The medicine is still being prepared (مازال الدواء قيد التحضير)
+---------------------------------------------------------------------------------
+CREATE TABLE Orders (
+    OrderId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Discount INT(11) NOT NULL,
+    DelivaryDate DATE NOT NULL,
+    OrderDate DATE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    Statu VARCHAR(100) NOT NULL,
+    Saller VARCHAR(50) NOT NULL,
+    OrderValue INT(11) NOT NULL,
+    CustId INT(11) NOT NULL,
+    FOREIGN KEY FKOrdersToCustomers(CustId)REFERENCES customer(CustId)
+);
+INSERT INTO `orders` (`OrderId`, `Discount`, `DelivaryDate`, `OrderDate`, `Statu`, `Saller`, `OrderValue`, `CustId`) VALUES
+(1, 5, '2022-04-28', '2022-03-29', 'RECEIVED', 'Ivan', 1200, 1),
+(2, 10, '2022-04-06', '2022-04-07', 'NO RECEIVEDCUST', 'Ivan', 2000, 2),
+(3, 15, '2022-04-15', '2022-04-07', 'NO RECEIVEDPHARMED', 'Ivan', 1500, 3),
+(4, 7, '2022-04-30', '2022-04-08', 'PREPARATION ', 'Ivan', 1800, 4);
+CREATE TABLE OrderContent
+(
+    Id INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL ,
+    OrderIdOrder INT(11) NOT NULL ,
+    MedIdMedicine INT(11) NOT NULL ,
+    FOREIGN KEY FKOrderContentToMedicenes(MedIdMedicine)REFERENCES medicines(MedId),
+    FOREIGN KEY FKOrderContentToOrders(OrderIdOrder)REFERENCES orders(OrderId)
+);
+INSERT INTO `ordercontent` (`Id`, `OrderIdOrder`, `MedIdMedicine`) VALUES
+(1, 1, 1),
+(2, 2, 1),
+(3, 3, 2),
+(4, 4, 1),
+(5, 1, 2),
+(6, 2, 1),
+(7, 3, 1),
+(8, 4, 3),
+(9, 1, 3);
+CREATE TABLE Medicines
+(
+    MedId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    MedName VARCHAR(100) NOT NULL ,
+    MedDosage INT(11) NOT NULL ,
+    MedPrice INT(11) NOT NULL ,
+    ExpDate DATE NOT NULL ,
+    ManufactureDate DATE DEFAULT CURRENT_TIMESTAMP NOT NULL ,
+    QuantityBuy INT(11) NOT NULL ,
+    DateDay DATE DEFAULT CURRENT_TIMESTAMP NOT NULL ,
+    MinimumQuantity INT(11) NOT NULL,
+    CategoryMed INT(11) NOT NULL ,
+    MedContent INT(11) NOT NULL ,
+    MedManufacturer INT(11) NOT NULL,
+    FOREIGN KEY FKMedicinesToManufacturer(MedManufacturer)REFERENCES Manufacturer(Id),
+    FOREIGN KEY FKMedicinesToCategoryMed(CategoryMed)REFERENCES CategoryMed(Id),
+    FOREIGN KEY FKMedicinesToMedicineContent(MedContent)REFERENCES MedicineContent(Id)
+);
+INSERT INTO `medicines` (`MedId`, `MedName`, `MedDosage`, `MedPrice`, `ExpDate`, `ManufactureDate`, `QuantityBuy`, `DateDay`, `MinimumQuantity`, `CategoryMed`, `MedContent`, `MedManufacturer`) 
+VALUES (1, 'Congestal', 500, 20, '2024-03-29', '2022-03-29', 1000, '2022-03-29', 10, 1, 6, 2),
+ (2, 'Liquid Paraffin Emulsion', 500, 600, '2025-04-08', '2022-04-07', 10, '2022-04-07', 5, 4, 4, 1),
+ (3, 'Cetrimide Cream', 20, 900, '2025-04-30', '2022-04-08', 15, '2022-04-08', 5, 2, 2, 1),
+ (4, 'Salicylic Acid and Sulphur Cream', 20, 380, '2025-04-12', '2022-04-08', 20, '2022-04-08', 5, 2, 2, 1), 
+(5, 'Ointment BP', 40, 1300, '2025-04-04', '2022-04-08', 20, '2022-04-08', 5, 6, 6, 1);
+
+
+CREATE TABLE Manufacturer
+(
+    Id INT(11) NOT NULL AUTO_INCREMENT ,
+    Manufacturer VARCHAR(100) NOT NULL ,
+    PRIMARY KEY(Id)
+);
+INSERT INTO 'manufacturer'(Id,Manufacturer) VALUES 
+(1,'PHARMACY'),
+(2,'FACTORY');
+CREATE TABLE CategoryMed
+(
+    Id INT(11) NOT NULL AUTO_INCREMENT,
+    Type VARCHAR(50) NOT NULL ,
+    PRIMARY KEY(Id)
+);
+INSERT INTO `categorymed` (`Id`, `Type`) VALUES
+(1, 'Tablets'),
+(2, 'Cream'),
+(3, 'Syrup'),
+(4, 'Liquid'),
+(5, 'Powder'),
+(6, 'Ointment');
+
+CREATE TABLE MatrialsStore
+(
+    Id INT(11) NOT NULL AUTO_INCREMENT,
+    MatName VARCHAR(100) NOT NULL ,
+    ManufacturerDate DATE DEFAULT CURRENT_TIMESTAMP NOT NULL ,
+    ExpDate DATE NOT NULL ,
+    Price INT(11)  NOT NULL ,
+    QuantityBuy INT(11) NOT NULL ,
+    QuantityDay INT(11) NOT NULL,
+    MinimumQuantity INT(11) NOT NULL,
+    Manufacturer VARCHAR(100) NOT NULL ,
+    Date DATE DEFAULT CURRENT_TIMESTAMP NOT NULL ,
+    PRIMARY KEY(Id)
+);
+
+INSERT INTO `matrialsstore` (`Id`, `MatName`, `ManufacturerDate`, `ExpDate`, `Price`, `QuantityBuy`, `QuantityDay`, `MinimumQuantity`, `Manufacturer`, `Date`) VALUES
+(1, 'Factory', '2022-04-07', '2022-03-29', 20, 1000, 999, 10, 'Factory', '2022-03-29'),
+(2, 'Arachis Oil BP c', '2022-04-07', '2025-08-04', 100, 1000, 1000, 100, 'HTMedicine', '2022-04-07'),
+(3, 'Acacia BP c', '2022-04-07', '2025-04-08', 80, 1200, 1200, 100, 'HTMedicine', '2022-04-07'),
+(4, 'Concentrated Peppermint Emulsion BP c', '2022-04-07', '2025-04-08', 120, 1000, 1000, 100, 'HTMedicine', '2022-04-07'),
+(5, 'Double Strength Chloroform Water BP c', '2022-04-07 20:35:59', '2025-04-08', 200, 2000, 2000, 200, 'HTMedicine', '2022-04-07 20:35:59'),
+(6, 'Water', '2022-04-07 20:35:59', '2025-04-08', 10, 10000, 10000, 1000, 'HTMedicine', '2022-04-07 20:35:59'),
+(7, 'Liquid Paraffin BP L', '2022-04-07 20:44:46', '2025-04-08', 120, 1000, 1000, 100, 'HTMedicine', '2022-04-07 20:44:46'),
+(8, 'Vanillin BP L', '2022-04-07 20:44:46', '2025-04-08', 200, 2000, 2000, 200, 'HTMedicine', '2022-04-07 20:44:46'),
+(9, 'Chloroform BP L', '2022-04-07 20:44:46', '2025-04-08', 10, 10000, 10000, 1000, 'HTMedicine', '2022-04-07 20:44:46'),
+(10, 'Benzoic Acid Solution BP L', '2022-04-07 20:44:46', '2025-04-08', 10, 10000, 10000, 1000, 'HTMedicine', '2022-04-07 20:44:46'),
+(11, 'Saccharin Sodium BP L', '2022-04-07 20:44:46', '2025-04-08', 10, 10000, 10000, 1000, 'HTMedicine', '2022-04-07 20:44:46'),
+(12, 'Cetrimide BP c', '2022-04-08 00:27:40', '2025-04-08', 120, 1000, 1000, 100, 'HTMedicine', '2022-04-08 00:27:40'),
+(13, 'Cetostearyl Alcohol BP c', '2022-04-08 00:27:40', '2025-04-08', 200, 2000, 2000, 200, 'HTMedicine', '2022-04-08 00:27:40'),
+(14, 'Liquid Paraffin BP c', '2022-04-08 00:27:40', '2025-04-08', 10, 10000, 10000, 1000, 'HTMedicine', '2022-04-08 00:27:40'),
+(15, 'Salicylic Acid BP c', '2022-04-08 00:45:24', '2025-04-08', 120, 1100, 1100, 100, 'HTMedicine', '2022-04-08 00:45:24'),
+(16, 'Precipitated Sulphur BP c', '2022-04-08 00:45:24', '2025-04-08', 200, 2200, 2200, 200, 'HTMedicine', '2022-04-08 00:45:24'),
+(17, 'Aqueous Cream BP c', '2022-04-08 00:45:24', '2025-04-08', 10, 1300, 1300, 100, 'HTMedicine', '2022-04-08 00:45:24'),
+(18, 'Cetostearyl Alcohol BP O', '2022-04-08 05:28:33', '2025-04-08', 100, 1200, 1200, 100, 'PharmaMedicine', '2022-04-08 05:28:33'),
+(19, 'Hard Paraffin BP O', '2022-04-08 05:28:33', '2025-04-08', 200, 1000, 2000, 200, 'PharmaMedicine', '2022-04-08 05:28:33'),
+(20, 'Wool Fat BP O', '2022-04-08 05:28:33', '2025-04-08', 10, 1000, 1000, 100, 'PharmaMedicine', '2022-04-08 05:28:33'),
+(21, 'White/Yellow Soft Paraffin BP O', '2022-04-08 05:28:33', '2025-04-08', 10, 1000, 1000, 100, 'PharmaMedicine', '2022-04-08 05:28:33');
+CREATE TABLE MedicineContent
+(
+    Id INT(11) NOT NULL AUTO_INCREMENT,
+    ADosage INT(11) NOT NULL ,
+    BDosage INT(11) NOT NULL ,
+    CDosage INT(11) NOT NULL ,
+    DDosage INT(11) NOT NULL ,
+    EDosage INT(11) NOT NULL ,
+    AMatrial INT(11) NOT NULL ,
+    BMatrial  INT(11) NOT NULL ,
+    CMatrial  INT(11) NOT NULL ,
+    DMatrial  INT(11) NOT NULL ,
+    EMatrial  INT(11) NOT NULL ,
+    CategoryMed INT(11) NOT NULL,
+    Method VARCHAR(5000),
+    FOREIGN KEY FkMedicineContentToCategoryMed(CategoryMed)REFERENCES CategoryMed(Id),
+    FOREIGN KEY FkMedicineContentToMatrialsStore(AMatrial)REFERENCES MatrialsStore(Id),
+    FOREIGN KEY FkMedicineContentToMatrialsStore(BMatrial)REFERENCES MatrialsStore(Id),
+    FOREIGN KEY FkMedicineContentToMatrialsStore(CMatrial)REFERENCES MatrialsStore(Id),
+    FOREIGN KEY FkMedicineContentToMatrialsStore(DMatrial)REFERENCES MatrialsStore(Id),
+    FOREIGN KEY FkMedicineContentToMatrialsStore(EMatrial)REFERENCES MatrialsStore(Id),
+     PRIMARY KEY(Id)
+);
+
+CREATE TABLE register(
+	RegId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    RegName VARCHAR(100) NOT NULL ,
+    RegEmail VARCHAR(100) NOT NULL,
+    RegPassword VARCHAR(20) NOT NULL,
+    RegPhone VARCHAR(15) NOT NULL
+);
+INSERT INTO register(RegId,RegName,RegEmail,RegPassword,RegPhone) VALUES(NULL,'Bishoy','Bisho@gmail.com','admin','89531201781');
+CREATE TABLE login(
+	LogId INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    LogEmail VARCHAR(100) NOT NULL ,
+    LogPassword VARCHAR(20) NOT NULL,
+    Reg INT(11) NOT NULL ,
+    FOREIGN KEY FK_logname(Reg)REFERENCES register(RegId)
+);
+INSERT INTO login(LogId,LogEmail,LogPassword,Reg)VALUES(NULL,'Bisho@gmail.com','admin',1)
+
+--------------------------------------------------------------------------------------------------------
+
+=====================================================Views========================================================
+
+        
+
+
+(1)
+CREATE VIEW viewCustomerdata
+AS 
+SELECT 
+	CustId,
+    CustName,
+    CustPhone,
+    CustAddress,
+    Type
+FROM
+    customer
+INNER JOIN customertype
+		ON customertype.Id = customer.CustType
+
+(2)
+
+CREATE VIEW ViewOrders
+AS
+SELECT OrderId,CustName ,Saller,OrderDate,DelivaryDate,Discount,OrderValue,(OrderValue-(OrderValue*(Discount/100))) AS RealValue,Statu
+FROM customer
+	INNER JOIN orders
+    	ON orders.CustId = customer.CustId
+ORDER BY OrderId;
+
+(3)
+CREATE VIEW viewOrderContent
+AS 
+SELECT 
+	CustName,
+	ordercontent.id,
+    MedName,
+    MedDosage,
+    MedPrice,
+    Type,
+    Manufacturer
+FROM
+    orders
+INNER JOIN customer
+		ON customer.CustId = orders.CustId
+        INNER JOIN ordercontent
+        		ON ordercontent.OrderIdOrder = ordercontent.OrderIdOrder
+                INNER JOIN medicines 
+                		ON medicines.MedId = ordercontent.MedIdMedicine
+                        INNER JOIN categorymed
+                        		ON categorymed.Id = medicines.CategoryMed
+                                INNER JOIN manufacturer 
+                                		ON manufacturer.Id = medicines.MedManufacturer
+
+
+
+(4)
+CREATE VIEW viewtablets
+AS
+SELECT MedId ,MedName ,MedDosage,MedPrice,ManufactureDate,ExpDate,Manufacturer ,QuantityDay
+FROM medicines
+	INNER JOIN manufacturer
+        		ON manufacturer.Id = medicines.MedManufacturer
+INNER JOIN categorymed
+	ON categorymed.Id = medicines.CategoryMed
+WHERE medicines.CategoryMed = 1;
+
+(5)
+CREATE VIEW viewcream
+AS
+SELECT MedId ,MedName ,MedDosage,MedPrice,ManufactureDate,ExpDate,Manufacturer ,QuantityDay
+FROM medicines
+		INNER JOIN manufacturer
+        		ON manufacturer.Id = medicines.MedManufacturer
+INNER JOIN categorymed
+	ON categorymed.Id = medicines.CategoryMed
+WHERE medicines.CategoryMed = 2;
+
+
+
+CALL PR_INSERT_INTO_MEDICINES('Potassium Permanganate',150,690,'2025-04-30',NOW(),20,20,NOW(),5,3,10,1)
+CALL PR_INSERT_INTO_MEDICINES('Plasters',0,20,'2025-04-30',NOW(),1000,1000,NOW(),100,7,1,2)
+==============================================ORDER STATU========================================
+RECEIVED: The order has been delivered to the customer (تم تسليم الاوردر للعميل)
+
+NO RECEIVEDCUST : The customer did not show up on time to receive the order (العميل لم يحضر فى الموعد المحدد لاستلام الاوردر)
+
+NO RECEIVEDPHAR : The order was not delivered to the customer due to a delay from the pharmacy (لم يتم تسليم الاوردر للعميل بسبب تاخير من الصيدليه)
+
+NO RECEIVEDPHARMED : The order was not delivered to the customer due to the medicine being out of stock (لم يتم تسليم الاوردر للعميل بسبب نفاذ الدواء من المخزن)
+
+PREPARATION : The medicine is still being prepared (مازال الدواء قيد التحضير)
+======================================================================================
+
+DELIMITER //
+CREATE PROCEDURE PR_CALC_Medicine(
+	IN namemed VARCHAR(100)
+)
+BEGIN
+	SELECT MedName,MedPrice
+    FROM medicines
+            WHERE medicines.MedName = namemed;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE PR_CALC_A(
+	IN namemed VARCHAR(100)
+)
+BEGIN
+	SELECT MatName,((matrialsstore.Price/100)*medicinecontent.ADosage) AS Price_For_A_100_GR
+    FROM medicines
+    INNER JOIN medicinecontent
+    			ON medicinecontent.Id = medicines.MedContent
+    INNER JOIN matrialsstore
+    		ON  matrialsstore.Id = medicinecontent.AMatrial
+            WHERE medicines.MedName = namemed;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE PR_CALC_B(
+	IN namemed VARCHAR(100)
+)
+BEGIN
+	SELECT MatName,((matrialsstore.Price/100)*medicinecontent.BDosage) AS Price_For_B_100_GR
+    FROM medicines
+    INNER JOIN medicinecontent
+    			ON medicinecontent.Id = medicines.MedContent
+    INNER JOIN matrialsstore
+    		ON  matrialsstore.Id = medicinecontent.BMatrial
+            WHERE medicines.MedName = namemed;
+END //
+DELIMITER ;
+
+
+
+DELIMITER //
+CREATE PROCEDURE PR_INSERT_INTO_ORDERCONTENT(
+	IN idorder INT(11),
+    IN idmed INT(11),
+    IN medname VARCHAR(100),
+    IN medprice INT(11)
+)
+BEGIN
+	INSERT INTO ordercontent(Id,OrderIdOrder,MedIdMedicine,MedicineName,MedicinePrice)
+    VALUES(NULL,idorder,idmed,medname,medprice);
+    UPDATE medicines
+    SET medicines.QuantityDay = (medicines.QuantityDay - 1)
+    WHERE ordercontent.MedIdMedicine = medicines.MedId;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE INSERT_INTO_ORDERS(
+	IN discount INT(11),
+    IN delivarydate DATE,
+    IN statu VARCHAR(100),
+    IN saller VARCHAR(100),
+    IN ordervalue INT(11),
+    IN custid INT(11)
+)
+BEGIN
+	INSERT INTO orders(OrderId,Discount,DelivaryDate,OrderDate,Statu,Saller,OrderValue,CustId)VALUES(NULL,discount,delivarydate,NOW(),statu,saller,ordervalue,custid);
+    
+END //
+DELIMITER ;
+---------------------------------------------
+(1) 1.1)
+CREATE VIEW KR_1_1
+AS
+SELECT
+    customer.CustId,
+    CustName,
+    CustPhone,
+    CustAddress,
+    DelivaryDate,
+    OrderDate,
+    Statu
+FROM
+   	customer
+INNER JOIN orders 
+	ON customer.CustId = orders.CustId
+WHERE orders.Statu = 'NO RECEIVEDCUST' AND DATEDIFF(orders.DelivaryDate,NOW()) <=0 
+GROUP BY CustName
+
+----------------------------------------
+1.2)
+CREATE VIEW kr_1_2
+AS
+SELECT 
+COUNT(*)
+FROM customer
+INNER JOIN orders
+		ON orders.CustId = customer.CustId
+WHERE orders.Statu = 'NO RECEIVEDCUST' AND DATEDIFF(orders.DelivaryDate,NOW()) <=0 
+=================================================================================================
+(2) 2.1)
+CREATE VIEW KR_2
+AS
+SELECT
+    customer.CustId,
+    CustName,
+    CustPhone,
+    CustAddress,
+    DelivaryDate,
+    OrderDate,
+    COUNT(OrderId) AS NumberOrders,
+    Statu
+FROM
+   	customer
+INNER JOIN orders 
+	ON customer.CustId = orders.CustId
+WHERE orders.Statu LIKE 'NO RECEIVEDPHAR%'
+GROUP BY CustName
+------------------------------------
+2.2)
+DELIMITER //
+
+CREATE PROCEDURE KR_2_2(
+	IN  NameCategory VARCHAR(100)
+)
+BEGIN
+SELECT
+    CustId,
+    CustName,
+    CustPhone,
+    CustAddress,
+    DelivaryDate,
+    OrderDate,
+    COUNT(orders.OrderId) AS NumberOrders,
+    Statu
+FROM
+   	customer
+INNER JOIN orders 
+	ON customer.CustId = orders.CustIdOrder
+INNER JOIN ordercontent
+	ON ordercontent.OrderIdOrder = ordercontent.OrderIdOrder
+INNER JOIN medicines 
+	ON medicines.MedId = ordercontent.MedIdMedicine
+INNER JOIN categorymed
+	ON categorymed.Id = medicines.CategoryMed
+WHERE orders.Statu LIKE 'NO RECEIVEDPHARMED' AND ordercontent.MedIdMedicine = medicines.MedId AND medicines.CategoryMed = categorymed.Id AND categorymed.Type = NameCategory
+GROUP BY CustName;
+END //
+
+DELIMITER ;
+
+CALL KR_2_2('Tablets')
+
+============================================================
+(3) 3.1)
+CREATE VIEW Kr_3_1
+AS 
+SELECT MedName,COUNT(*) AS NumberPayments
+FROM ordercontent  
+INNER JOIN medicines 
+	ON ordercontent.MedIdMedicine = medicines.MedId
+GROUP BY MedName 
+ORDER BY COUNT(*) DESC
+LIMIT 10;
+
+-------------------------
+(3) 3.2)
+DELIMITER //
+
+CREATE PROCEDURE KR_3_2(
+	IN CategoryMed VARCHAR(100)
+)
+BEGIN
+SELECT MedName,COUNT(*) 
+FROM ordercontent  
+INNER JOIN medicines 
+	ON ordercontent.MedIdMedicine = medicines.MedId
+INNER JOIN categorymed 
+	ON medicines.CategoryMed = categorymed.Id
+WHERE categorymed.Type = CategoryMed
+GROUP BY MedName 
+ORDER BY COUNT(*) DESC
+LIMIT 10;
+END //
+
+DELIMITER ;
+
+CALL KR_3_2('Tablets')
+==================================
+(4)
+DELIMITER //
+CREATE PROCEDURE KR_4(
+	IN NameMatriale VARCHAR(100),
+    IN DatePerio DATE
+)
+BEGIN
+	SELECT MatName,
+	   Manufacturer,ExpDate,ManufacturerDate,TIMESTAMPDIFF(DAY,ManufacturerDate,DatePerio) AS Period ,(QuantityBuy-QuantityDay)AS QuantityRemaining
+FROM matrialsstore
+WHERE MatName = NameMatriale;
+END //
+DELIMITER ;
+
+
+CALL KR_4('Arachis Oil BP c','2022-04-21')
+============================================
+(5) 5.1)
+DELIMITER //
+
+CREATE PROCEDURE KR_5_1(
+	IN MedName VARCHAR(255),
+    IN DatePeriod DATE
+)
+BEGIN
+	SELECT  CustId, CustName,CustPhone,CustAddress,MedName,TIMESTAMPDIFF(DAY,OrderDate,DatePeriod) AS TimePeriod
+FROM customer
+INNER JOIN orders 
+		ON orders.CustIdOrder = customer.CustId
+INNER JOIN ordercontent
+		ON ordercontent.OrderIdOrder=orders.OrderId
+INNER JOIN medicines
+		ON ordercontent.MedIdMedicine=medicines.MedId
+WHERE medicines.MedName = MedName
+GROUP BY CustName;
+END //
+DELIMITER ;
+
+CALL KR_4('Amino Acids','2022-04-21')
+
+-------------------------------
+5.2)
+
+DELIMITER //
+
+CREATE PROCEDURE KR_5_2(
+	IN CategoryName VARCHAR(255),
+    IN DatePeriod DATE
+)
+BEGIN
+	SELECT  CustId, CustName,CustPhone,CustAddress,MedName,TIMESTAMPDIFF(DAY,OrderDate,DatePeriod) AS TimePeriod
+FROM customer
+INNER JOIN orders 
+		ON orders.CustIdOrder = customer.CustId
+INNER JOIN ordercontent
+		ON ordercontent.OrderIdOrder=orders.OrderId
+INNER JOIN medicines
+		ON ordercontent.MedIdMedicine=medicines.MedId
+INNER JOIN categorymed
+		ON categorymed.Id = medicines.CategoryMed
+WHERE categorymed.Type = CategoryName
+GROUP BY CustName;
+END //
+DELIMITER ;
+
+CALL KR_5_2("Tablets",'2022-04-20')
+
+=========================================================
+(6)
+CREATE VIEW Kr_6
+AS 
+SELECT MedId , MedName,Type
+FROM medicines
+INNER JOIN categorymed
+		ON categorymed.Id = medicines.CategoryMed
+WHERE QuantityDay <= MinimumQuantity
+
+==============================================
+(7)7.1)
+CREATE VIEW Kr_7_1
+AS 
+SELECT MedId , MedName
+FROM medicines
+WHERE QuantityDay = MinimumQuantity
+
+--------------
+7.2)
+DELIMITER //
+
+CREATE PROCEDURE KR_7_2(
+	IN categorymedicine VARCHAR(100)
+)
+BEGIN
+SELECT MedId , MedName
+FROM medicines
+INNER JOIN categorymed
+		ON categorymed.Id = medicines.CategoryMed
+WHERE QuantityDay = MinimumQuantity AND Type = categorymedicine;
+END //
+
+DELIMITER ;
+
+CALL kr_7_2("Ointment")
+
+
+
+
+===================================================================================
+(8)
+CREATE VIEW Kr_8
+AS
+SELECT  OrderId,CustName,Statu,Saller,OrderValue,DelivaryDate,OrderDate,COUNT(*) AS Totalorders
+FROM orders
+	INNER JOIN customer
+    		ON customer.CustId = orders.CustId
+WHERE Statu LIKE '%PREPARATION%';
+===============================================================================
+(9)
+CREATE VIEW kr_9
+AS
+SELECT OrderId,CustName, Statu,MedName,COUNT(*) AS TotalMedicinesInProduction
+FROM orders
+INNER JOIN ordercontent
+		ON ordercontent.OrderIdOrder = orders.OrderId
+INNER JOIN medicines
+		ON medicines.MedId = ordercontent.MedIdMedicine
+INNER JOIN customer 
+		ON customer.CustId = orders.CustId
+WHERE Statu LIKE '%PREPARATION%'
+GROUP BY MedName
+
+===============================================================================
+(10) 10.1)
+DELIMITER //
+
+CREATE PROCEDURE KR_10_1(
+	IN CategoryMedicine VARCHAR(100)
+)
+BEGIN
+SELECT MedName,Method
+FROM medicines
+INNER JOIN medicinecontent
+		ON medicinecontent.Id = medicines.MedContent
+INNER JOIN categorymed 
+		ON categorymed.Id = medicines.CategoryMed
+WHERE categorymed.Type = CategoryMedicine;
+END //
+
+DELIMITER ;
+
+CALL KR_10_1("Liquid")
+-----------------------------------------
+10.2)
+DELIMITER //
+
+CREATE PROCEDURE KR_10_2(
+	IN MedicineName VARCHAR(100)
+)
+BEGIN
+SELECT MedName,Method
+FROM medicines
+INNER JOIN medicinecontent
+		ON medicinecontent.Id = medicines.MedContent
+WHERE medicines.MedName = MedicineName;
+END //
+
+DELIMITER ;
+
+CALL KR_10_1("Liquid Paraffin Emulsion")
+------------------------------
+10.3)
+CREATE VIEW kr_10_3
+AS
+SELECT Statu,MedName,Method
+FROM orders
+INNER JOIN ordercontent
+		ON ordercontent.OrderIdOrder = orders.OrderId
+INNER JOIN medicines
+		ON medicines.MedId = ordercontent.MedIdMedicine
+INNER JOIN medicinecontent
+		ON medicinecontent.Id = medicines.MedContent
+WHERE Statu LIKE '%PREPARATION%'
+GROUP BY MedName
+--------------------------------------------------------------
+11)      SELECT MedName,MedPrice
+	  FROM medicines 
+      WHERE medicines.MedName = 'Compound Zinc Paste BP'
+        LIMIT 1;
+CALL PR_CALC_A('Liquid Paraffin Emulsion');
+CALL PR_CALC_B('Liquid Paraffin Emulsion');
+CALL PR_CALC_C('Liquid Paraffin Emulsion');
+CALL PR_CALC_D('Liquid Paraffin Emulsion');
+CALL PR_CALC_E('Liquid Paraffin Emulsion');
+CALL PR_CALC_Medicine('Liquid Paraffin Emulsion');
+
+------------------------------------------------------
+12)
+CREATE VIEW Kr_12
+AS
+SELECT CustId, CustName,CustAddress ,CustPhone ,Type
+FROM customer 
+INNER JOIN customertype 
+	ON customertype.Id = customer.CustType
+WHERE Type = 'PERMENET';
+----------------------------------------------
+13)
+DELIMITER //
+CREATE PROCEDURE KR_13(
+	IN namemed VARCHAR(11)
+)
+BEGIN
+	SELECT MedName , MedPrice ,Type, Method,medicines.QuantityDay
+    FROM medicines
+    INNER JOIN categorymed
+    	ON categorymed.Id = medicines.CategoryMed
+    INNER JOIN medicinecontent
+    	ON medicinecontent.Id = medicines.MedContent
+     WHERE MedName = namemed
+     LIMIT 1;
+END //
+DELIMITER ;
+
+
+
+CALL KR_13('Compound Zinc Paste BP');
+CALL PR_CALC_A('Compound Zinc Paste BP');
+CALL PR_CALC_B('Compound Zinc Paste BP');
+CALL PR_CALC_C('Compound Zinc Paste BP');
+CALL PR_CALC_D('Compound Zinc Paste BP');
+CALL PR_CALC_E('Compound Zinc Paste BP');
+
+
+
+
+===========================================================================================
+DELIMITER //
+CREATE PROCEDURE PR_INSERT_INTO_MEDICINE(
+    IN medname VARCHAR(100),
+    IN  meddosage INT(11),
+    IN medprice INT(11),
+    IN expdate DATE ,
+    IN manufacturerdate DATE,
+    IN quantitybuy INT(11),
+    IN quantityday INT(11),
+    IN minimumquantity INT(11),
+    IN categorymed VARCHAR(50),
+    IN medcontent INT(11),
+    IN medmanufacturer INT(11)
+)
+BEGIN
+	INSERT INTO medicines(MedId,MedName,MedDosage,MedPrice,ExpDate,ManufactureDate,QuantityBuy,QuantityDay,DateDay,MinimumQuantity,CategoryMed,MedContent,MedManufacturer)
+    VALUES(NULL,medname,meddosage,medprice,expdate,manufacturerdate,quantitybuy,quantityday,NOW(),minimumquantity,categorymed,medcontent,medmanufacturer);
+    
+    UPDATE matrialsstore
+    INNER JOIN medicines
+    			ON medicines.MedContent = medicinecontent.Id
+    INNER JOIN medicinecontent
+    		ON medicinecontent.Id = medicines.MedContent
+     SET matrialsstore.QuantityDay = (matrialsstore.QuantityDay-(medicines.QuantityDay*medicinecontent.ADosage))
+       WHERE matrialsstore.Id = medicinecontent.AMatrial;
+     
+     
+     UPDATE matrialsstore
+         INNER JOIN medicines
+    			ON medicines.MedContent = medicinecontent.Id
+    INNER JOIN medicinecontent
+    		ON medicinecontent.Id = medicines.MedContent
+     SET matrialsstore.QuantityDay = (matrialsstore.QuantityDay-(medicines.QuantityDay*medicinecontent.BDosage))
+     WHERE matrialsstore.Id = medicinecontent.BMatrial;
+     
+     
+     UPDATE matrialsstore
+         INNER JOIN medicines
+    			ON medicines.MedContent = medicinecontent.Id
+    INNER JOIN medicinecontent
+    		ON medicinecontent.Id = medicines.MedContent
+     SET matrialsstore.QuantityDay = (matrialsstore.QuantityDay-(medicines.QuantityDay*medicinecontent.CMatrial))
+       WHERE matrialsstore.Id = medicinecontent.CMatrial;
+       
+       
+            UPDATE matrialsstore
+                INNER JOIN medicines
+    			ON medicines.MedContent = medicinecontent.Id
+    INNER JOIN medicinecontent
+    		ON medicinecontent.Id = medicines.MedContent
+     SET matrialsstore.QuantityDay = (matrialsstore.QuantityDay-(medicines.QuantityDay*medicinecontent.DDosage))
+       WHERE matrialsstore.Id = medicinecontent.DMatrial;
+       
+            UPDATE matrialsstore
+                INNER JOIN medicines
+    			ON medicines.MedContent = medicinecontent.Id
+    INNER JOIN medicinecontent
+    		ON medicinecontent.Id = medicines.MedContent
+     SET matrialsstore.QuantityDay = (matrialsstore.QuantityDay-(medicines.QuantityDay*medicinecontent.EDosage))
+       WHERE matrialsstore.Id = medicinecontent.EMatrial;
+END //
+DELIMITER ;
+
+
+
+
+CALL PR_INSERT_INTO_MEDICINE('Liquid paraffin 15%',200,1100,'2025-05-02',NOW(),30,30,5,4,7,1)
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+DELIMITER //
+
+CREATE PROCEDURE INSERT_INTO_MATERIALSSTORE(
+    IN matname VARCHAR(100),
+    IN expdate DATE,
+    IN matprice INT(11),
+    IN quantitybuy INT(11),
+    IN minimumquantity INT(11),
+    IN manufacturername VARCHAR(100)
+
+)
+BEGIN
+	INSERT INTO matrialsstore(Id,MatName,ManufacturerDate,ExpDate,Price,QuantityBuy,QuantityDay,MinimumQuantity,Manufacturer,Date)
+    VALUES(NULL,matname,NOW(),expdate,matprice,quantitybuy,quantitybuy,minimumquantity,manufacturername,NOW());  
+END //
+DELIMITER ;
+
+
+-----------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE UPDATE_CUSTOMER(
+	IN id INT(11) ,
+    IN name VARCHAR(100),
+    IN phone VARCHAR(15),
+    IN address VARCHAR(100),
+    IN type INT(11)
+)
+BEGIN
+
+	UPDATE customer 
+    SET 
+		CustName = name,
+    	CustPhone = phone,
+		CustAddress = address,
+    	CustType = type
+    WHERE CustId = id;
+END //
+DELIMITER ;
+
+CALL UPDATE_CUSTOMER(5,'Elina Ivanov Galovish','89652341896','Russia-Perm',2)
+
+-------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE UPDATE_ORDER(
+	IN idorder INT(11),
+    IN discount INT(11),
+    IN delivarydate DATE,
+    IN statu VARCHAR(100),
+    IN saller VARCHAR(100),
+    IN ordervalue INT(11)
+)
+BEGIN
+	UPDATE orders 
+    SET Discount = discount,
+    	DelivaryDate =delivarydate,
+        Statu = statu,
+        Saller = saller,
+    	OrderValue = ordervalue
+		WHERE orders.OrderId = idorder;
+END //
+DELIMITER ;
+
+CALL UPDATE_ORDER(7,10,'2022-05-02','NO RECEIVEDCUST','Ivan',2890)
+
+----------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE UPDATE_MATERIALSSTORE(
+	IN idmat INT(11),
+    IN matname VARCHAR(100),
+    IN expdate DATE,
+    IN price INT(11),
+    IN quantitybuy INT(11),
+    IN quantityday INT(11),
+    IN minimumquantity INT(11),
+    IN manufacturer VARCHAR(100)
+)
+BEGIN
+	UPDATE matrialsstore 
+    SET MatName = matname,
+    ManufacturerDate = NOW(),
+    ExpDate = expdate,
+    Price = price,
+    QuantityBuy = (matrialsstore.QuantityBuy+quantitybuy),
+    QuantityDay = (matrialsstore.QuantityDay + quantityday),
+    MinimumQuantity = minimumquantity,
+    Manufacturer = manufacturer,
+    matrialsstore.Date = NOW()
+    WHERE Id = idmat;
+END //
+DELIMITER ;
+
+
+----------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE UPDATE_MEDICINECONTENT(
+	IN id INT(11),
+    IN dosagea INT(11),
+    IN dosageb INT(11),
+    IN dosagec INT(11),
+    IN dosaged INT(11),
+    IN dosagee INT(11),
+    IN matriala INT(11),
+    IN matrialb INT(11),
+    IN matrialc INT(11),
+    IN matriald INT(11),
+    IN matriale INT(11),
+    IN categorymed INT(11),
+    IN method VARCHAR(5000)
+)
+BEGIN
+	UPDATE medicinecontent
+    SET ADosage = dosagea,
+    BDosage =dosageb,
+    CDosage = dosagec,
+    DDosage =dosaged,
+    EDosage =dosagee,
+	AMatrial = matriala,
+    BMatrial = matrialb,
+    CMatrial = matrialc,
+    DMatrial = matriald,
+    EMatrial = matriale,
+    CategoryMed = categorymed,
+    Method = method
+    WHERE matrialsstore.Id = id;
+END //
+DELIMITER ;
+
+
+CALL UPDATE_MEDICINECONTENT(1,40,10,25,17,65,4,2,8,12,15,3,'')
+
+-------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE DELETE_MATERIAL(
+	IN idmat INT(11)
+)
+BEGIN
+	
+    UPDATE medicinecontent
+    SET AMatrial = 22, 
+    	ADosage = 0
+        WHERE AMatrial = idmat;
+        
+    UPDATE medicinecontent
+    SET BMatrial = 22, 
+    	BDosage = 0
+        WHERE BMatrial = idmat;
+        
+      UPDATE medicinecontent
+    SET CMatrial = 22, 
+    	CDosage = 0
+        WHERE CMatrial = idmat;
+     
+       UPDATE medicinecontent
+    SET DMatrial = 22, 
+    	DDosage = 0
+        WHERE DMatrial = idmat;
+        
+          UPDATE medicinecontent
+    SET EMatrial = 22, 
+    	EDosage = 0
+        WHERE EMatrial = idmat;
+	DELETE FROM matrialsstore WHERE matrialsstore.Id = idmat;
+END //
+DELIMITER ;
+-------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE DELETE_MEDICINECONTENT(
+	IN idmedcontent INT(11)
+)
+BEGIN
+	DELETE FROM medicinecontent WHERE Id = idmedcontent;
+END //
+DELIMITER ;
+CALL DELETE_MEDICINECONTENT(10)
+
+
+----------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE DELETE_MEDICINE(
+	IN idmed INT(11)
+)
+BEGIN       
+	UPDATE ordercontent
+    SET MedIdMedicine = 11
+    WHERE MedIdMedicine = idmed;
+       DELETE FROM medicines WHERE MedId = idmed;
+END //
+DELIMITER ;
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+DELIMITER //
+CREATE PROCEDURE UPDATE_MEDICINE(
+	IN idmed INT(11),
+    IN namemed VARCHAR(100),
+    IN dosage INT(11),
+    IN price INT(11),
+    IN expdate DATE,
+    IN quantitybuy INT(11),
+    IN medcontent INT(11),
+    IN minimumquantity INT(11)
+    
+)
+BEGIN    
+    UPDATE matrialsstore
+    INNER JOIN medicines
+    			ON medicines.MedContent = medcontent
+    INNER JOIN medicinecontent
+    		ON medicinecontent.Id = medicines.MedContent
+     SET matrialsstore.QuantityDay = (matrialsstore.QuantityDay-(quantitybuy*medicinecontent.ADosage))
+       WHERE matrialsstore.Id = medicinecontent.AMatrial;
+     
+     
+     UPDATE matrialsstore
+         INNER JOIN medicines
+    			ON medicines.MedContent = medcontent
+    INNER JOIN medicinecontent
+    		ON medicinecontent.Id = medicines.MedContent
+     SET matrialsstore.QuantityDay = (matrialsstore.QuantityDay-(quantitybuy*medicinecontent.BDosage))
+     WHERE matrialsstore.Id = medicinecontent.BMatrial;
+     
+     
+     UPDATE matrialsstore
+         INNER JOIN medicines
+    		ON medicines.MedContent = medcontent
+    INNER JOIN medicinecontent
+    		ON medicinecontent.Id = medicines.MedContent
+     SET matrialsstore.QuantityDay = (matrialsstore.QuantityDay-(quantitybuy*medicinecontent.CMatrial))
+       WHERE matrialsstore.Id = medicinecontent.CMatrial;
+       
+       
+            UPDATE matrialsstore
+                INNER JOIN medicines
+    		ON medicines.MedContent = medcontent
+    INNER JOIN medicinecontent
+    		ON medicinecontent.Id = medicines.MedContent
+     SET matrialsstore.QuantityDay = (matrialsstore.QuantityDay-(quantitybuy*medicinecontent.DDosage))
+       WHERE matrialsstore.Id = medicinecontent.DMatrial;
+       
+            UPDATE matrialsstore
+                INNER JOIN medicines
+    			ON medicines.MedContent = medcontent
+    INNER JOIN medicinecontent
+    		ON medicinecontent.Id = medicines.MedContent
+     SET matrialsstore.QuantityDay = (matrialsstore.QuantityDay-(quantitybuy*medicinecontent.EDosage))
+       WHERE matrialsstore.Id = medicinecontent.EMatrial;
+       
+      UPDATE medicines
+      SET medicines.MedName = namemed,
+      medicines.MedDosage = dosage,
+      medicines.MedPrice = price,
+      medicines.ExpDate = expdate,
+      medicines.ManufactureDate = NOW(),
+      medicines.QuantityBuy = quantitybuy,
+      medicines.QuantityDay = quantitybuy,
+      medicines.DateDay = NOW(),
+      medicines.MinimumQuantity = minimumquantity
+      WHERE medicines.MedId = idmed;
+END //
+DELIMITER ;
+
+
+---------------------------------------------------------------------------------------
+
+DELIMITER //
+CREATE PROCEDURE SELECT_NAMEANDPRICE_MEDICINE(
+    IN idmed INT(11)
+)
+BEGIN
+	SELECT MedName , MedPrice
+    FROM medicines 
+    WHERE medicines.MedId = idmed;
+END //
+DELIMITER ;
+----------------------------------------------------------------------------------
+CREATE VIEW viewordercontent
+AS
+SELECT OrderId ,CustName,OrderDate,DelivaryDate,Statu,MedicineName,MedicinePrice
+FROM orders
+INNER JOIN customer
+	ON customer.CustId = orders.CustId
+    INNER JOIN ordercontent
+    ON ordercontent.OrderIdOrder = orders.OrderId
+ORDER BY ordercontent.Id
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------Protection----------------------------------------------
+
+CREATE USER [IF NOT EXISTS] bisho@localhost
+IDENTIFIED BY 'admin';
+
+
+
+REVOKE ALL PRIVILEGES ON *.* FROM 'bisho'@'localhost';
+REVOKE GRANT OPTION ON *.* FROM 'bisho'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE, FILE, 
+SHOW VIEW ON *.* TO 'bisho'@'localhost' 
+REQUIRE NONE WITH 
+MAX_QUERIES_PER_HOUR 0 
+MAX_CONNECTIONS_PER_HOUR 0 
+MAX_UPDATES_PER_HOUR 0 
+MAX_USER_CONNECTIONS 0;
+
+
+
+		---------------Customer---------------
+GRANT SELECT
+ON customer
+TO bisho@localhost;
+
+GRANT INSERT, UPDATE, DELETE
+ON customer 
+TO bisho@localhost;
+
+
+		---------------CategoryMed---------------
+
+GRANT SELECT
+ON categorymed
+TO bisho@localhost;
+
+GRANT  UPDATE, DELETE
+ON categorymed 
+TO bisho@localhost;
+
+
+		---------------customertype---------------
+GRANT SELECT
+ON customertype
+TO bisho@localhost;
+
+GRANT  UPDATE, DELETE
+ON customertype 
+TO bisho@localhost;
+
+
+		---------------Manufacturer---------------
+
+GRANT SELECT
+ON Manufacturer
+TO bisho@localhost;
+
+GRANT  UPDATE, DELETE
+ON Manufacturer 
+TO bisho@localhost;
+
+
+
+		---------------MatrialsStore---------------
+GRANT SELECT
+ON matrialsstore
+TO bisho@localhost;
+
+GRANT INSERT, UPDATE, DELETE
+ON matrialsstore 
+TO bisho@localhost;
+
+
+
+
+
+
+	---------------medicinecontent---------------
+GRANT SELECT
+ON medicinecontent
+TO bisho@localhost;
+
+GRANT INSERT, UPDATE, DELETE
+ON medicinecontent 
+TO bisho@localhost;
+
+
+	---------------medicines---------------
+GRANT SELECT
+ON medicines
+TO bisho@localhost;
+
+GRANT INSERT, UPDATE, DELETE
+ON medicines 
+TO bisho@localhost;
+
+
+	---------------ordercontent---------------
+GRANT SELECT
+ON ordercontent
+TO bisho@localhost;
+
+GRANT INSERT, UPDATE, DELETE
+ON ordercontent 
+TO bisho@localhost;
+
+
+	---------------Orders---------------
+
+GRANT SELECT
+ON orders
+TO bisho@localhost;
+
+GRANT INSERT, UPDATE, DELETE
+ON orders 
+TO bisho@localhost;
+
+
+
+		---------------register---------------
+GRANT SELECT
+ON register
+TO bisho@localhost;
+
+GRANT INSERT
+ON register 
+TO bisho@localhost;
+
+
+
+SHOW GRANTS FOR bisho@localhost;
+
+SHOW PROCEDURE STATUS;
+
+
+
+				--------------------------Procedure  SELECT_PRICE --------------------
+GRANT EXECUTE 
+ON PROCEDURE SELECT_PRICE 
+TO bisho@localhost;
+
+
+
+				--------------------------Procedure  DELETE_MATERIAL--------------------
+GRANT EXECUTE 
+ON PROCEDURE DELETE_MATERIAL
+TO bisho@localhost;
+
+
+
+				--------------------------Procedure  DELETE_MEDICINE--------------------
+GRANT EXECUTE 
+ON PROCEDURE DELETE_MEDICINE
+TO bisho@localhost;
+
+
+				--------------------------Procedure  DELETE_MEDICINECONTENT--------------------
+GRANT EXECUTE 
+ON PROCEDURE DELETE_MEDICINECONTENT
+TO bisho@localhost;
+
+
+
+				--------------------------Procedure  INSERT_INTO_MATERIALSSTORE--------------------
+GRANT EXECUTE 
+ON PROCEDURE INSERT_INTO_MATERIALSSTORE
+TO bisho@localhost;
+
+
+
+
+			--------------------------Procedure INSERT_INTO_MEDICINECONTENT--------------------
+GRANT EXECUTE 
+ON PROCEDURE INSERT_INTO_MEDICINECONTENT
+TO bisho@localhost;
+
+
+
+			--------------------------Procedure INSERT_INTO_ORDERS--------------------
+
+GRANT EXECUTE 
+ON PROCEDURE INSERT_INTO_ORDERS
+TO bisho@localhost;
+
+			--------------------------Procedure KR_2_2--------------------
+GRANT EXECUTE 
+ON PROCEDURE KR_2_2
+TO bisho@localhost;
+
+
+			--------------------------Procedure KR_3_2--------------------
+GRANT EXECUTE 
+ON PROCEDURE KR_2_3
+TO bisho@localhost;
+
+
+			--------------------------Procedure KR_4--------------------
+GRANT EXECUTE 
+ON PROCEDURE KR_4
+TO bisho@localhost;
+
+
+			--------------------------Procedure KR_5_1--------------------
+GRANT EXECUTE 
+ON PROCEDURE KR_5_1
+TO bisho@localhost;
+
+			--------------------------Procedure KR_5_2--------------------
+GRANT EXECUTE 
+ON PROCEDURE KR_5_2
+TO bisho@localhost;
+
+
+			--------------------------Procedure KR_7_2--------------------
+GRANT EXECUTE 
+ON PROCEDURE KR_7_2
+TO bisho@localhost;
+
+
+			--------------------------Procedure KR_10_1--------------------
+GRANT EXECUTE 
+ON PROCEDURE KR_10_1
+TO bisho@localhost;
+
+			--------------------------Procedure KR_10_2--------------------
+GRANT EXECUTE 
+ON PROCEDURE KR_10_2
+TO bisho@localhost;
+
+
+			--------------------------Procedure KR_13--------------------
+GRANT EXECUTE 
+ON PROCEDURE KR_13
+TO bisho@localhost;
+
+
+
+
+			--------------------------Procedure --------------------
+GRANT EXECUTE 
+ON PROCEDURE PR_CALC_A
+TO bisho@localhost;
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE PR_CALC_B
+TO bisho@localhost;
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE PR_CALC_C
+TO bisho@localhost;
+
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE PR_CALC_D
+TO bisho@localhost;
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE PR_CALC_E
+TO bisho@localhost;
+
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE PR_CALC_A
+TO bisho@localhost;
+
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE PR_CALC_B
+TO bisho@localhost;
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE PR_CALC_C
+TO bisho@localhost;
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE PR_CALC_D
+TO bisho@localhost;
+
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE PR_CALC_E
+TO bisho@localhost;
+
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE PR_CALC_Medicine
+TO bisho@localhost;
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE PR_INSERT_INTO_MEDICINE
+TO bisho@localhost;
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE PR_INSERT_INTO_ORDERCONTENT
+TO bisho@localhost;
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE SELECT_NAMEANDPRICE_MEDICINE
+TO bisho@localhost;
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE SELECT_PRICE
+TO bisho@localhost;
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE UPDATE_CUSTOMER
+TO bisho@localhost;
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE UPDATE_MATERIALSSTORE
+TO bisho@localhost;
+
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE UPDATE_MEDICINE
+TO bisho@localhost;
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE UPDATE_MEDICINECONTENT
+TO bisho@localhost;
+
+
+			--------------------------Procedure --------------------
+
+GRANT EXECUTE 
+ON PROCEDURE UPDATE_ORDER
+TO bisho@localhost;
+
+
+
+
