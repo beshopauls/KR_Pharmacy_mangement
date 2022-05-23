@@ -1,0 +1,526 @@
+/* Start Global Rules */
+*{
+    box-sizing: border-box;
+}
+:root{
+    --main-color:#2196F3;
+    --main-color-alt:#1787e0;
+    --main-Font-size: 18px;
+    --main-transtion: 0.5s;
+    --main-padding-top: 100px;
+    --main-padding-bottom: 100px;
+    --section-background-color:#ececec;
+}
+html{
+    scroll-behavior: smooth;
+}
+body{
+    font-family: 'Cairo', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+}
+ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+}
+.container{
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* Small Screan */
+@media (min-width:768px){
+    .container{
+        width: 750px;
+    }
+}
+/* Medium Screan */
+@media (min-width:992px){
+    .container{
+        width: 970px;
+    }
+}
+/* Large Screan */
+@media (min-width:1200px){
+    .container{
+        width: 1170px;
+    }
+}
+.main-title{
+
+    border: 2px solid black;
+    padding: 10px 20px;
+    font-size: 18px;
+    color: var(--main-color);
+    width: fit-content;
+    position: relative;
+    z-index: 1;
+    transition: var(--main-transition);
+    text-transform: uppercase   ;
+    left: 50%;
+    font-weight: bold;
+}
+.main-title::before,
+.main-title::after{
+    content: "";
+    width: 12px;
+    height: 12px;
+    background-color: var(--main-color);
+    position: absolute;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.main-title::before{
+  left: -30px; 
+}
+.main-title::after{
+    right: -30px; 
+}
+.main-title:hover::before{
+    z-index: -1;
+    animation: left-move-covering var(--main-transtion) linear forwards;
+}
+.main-title:hover::after{
+    z-index: -1;
+    animation: right-move-covering var(--main-transtion) linear forwards;
+}
+.main-title:hover{
+    color: white;
+    border: 2px solid white;
+    transition-delay: var(--main-transtion);
+}
+.spikes{
+    position: relative;
+}
+.spikes::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    width: 100%;
+    height: 30px;
+    z-index: 1;
+    background-image: linear-gradient(135deg, var(--section-background-color) 25%, transparent 25%), linear-gradient(225deg, white 25%, transparent 25%);
+    background-size: 30px 30px;
+}
+/* End Global Rules */
+/* Start Animations */
+@keyframes up-and-dwon{
+    0%,100%{
+        bottom: 0;
+    }
+    50%{
+        bottom: -40px;
+    }
+}
+@keyframes left-move-covering {
+    50%{
+        left: 0;
+        width: 12px;
+        height: 12px;
+    }
+    100%{
+        left: 0;
+        border-radius: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+@keyframes right-move-covering {
+    50%{
+        right: 0;
+        width: 12px;
+        height: 12px;
+    }
+    100%{
+        right: 0;
+        border-radius: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+@keyframes moving-arrow {
+    100%{
+        transform: translateX(-5px);
+    }
+}
+@keyframes change-background {
+    0%,100%{
+        background-image: url(../images/customer1.avif);
+    }
+   50%{
+        background-image: url(../images/customer2.avif);
+    }
+}
+/* End Animations */
+
+
+/* Start Header  */
+.header{
+    background-color:white ;
+    position: relative;
+    box-shadow: 0 0 3px #403737;
+}
+.header .container{
+    display:  flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+.header .logo a{
+    color: var(--main-color);
+    font-size: 26px;
+    height: 72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-style: italic;
+    font-weight: bold;
+}
+@media (max-width:767px) {
+    .header .logo a{
+        width: 100%;
+        height: 70px;
+        margin-left: 75px;
+    }
+}
+@media (max-width:767px) {
+     .header .main-title{
+        display: none;
+    }
+}
+.main-title{
+    left: 40px;
+    top: 20px;
+    margin-bottom: 30px;
+}
+.header .container .link{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header .link a{
+    color: var(--main-color);
+    margin-right: 40px;
+    font-size: var(--main-Font-size);
+    transition: var(--main-transtion);
+    font-weight: bold;
+}
+@media (max-width:767px) {
+    .header .link{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: auto ;
+    }
+}
+
+.header .link > a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 72px;
+    position: relative;
+    padding: 0 30px;
+    transition: var(--main-transtion);
+    overflow: hidden;
+}
+@media (max-width:767px) {
+    .header .link > a{
+        padding: 10px;
+        font-size: 14px;
+        height: 40px;
+    }
+}
+.header .link > a::after{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background-color: var(--main-color);
+    bottom: 0;
+    left: -100%;
+    transition: var(--main-transtion);
+}
+.header .link > a:hover{
+    color: var(--main-color-alt);
+    background-color: #fafafa;
+}
+.header .link a:hover::after{
+    left: 0;
+}
+.header .link img{
+    width: 72px;
+}
+/* End Header */
+
+
+
+/* Start Main Content */
+.main-content.viewmedicines{
+    display: flex;
+    justify-content: flex-start;
+    /* transition: var(--main-transtion); */
+    height: auto;
+    /* background-color: var(--section-background-color); */
+}
+.main-content.viewmedicines .list{
+    width: 350px;
+    background-color: white;
+    height: auto;
+    /* margin-right: 100px; */
+}
+@media (max-width:991px) {
+    .main-content.viewmedicines{
+       flex-direction: column;
+    }
+}
+@media (max-width:991px) {
+    .main-content.viewmedicines .list{
+        width: 100%;
+        height: 100%;
+        text-align: center;
+    }
+}
+.main-content.viewmedicines .list .name{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #f4f4f4;
+    font-weight: bold;
+    color: var(--main-color);
+}
+.main-content.viewmedicines .list ul li{
+    padding: 20px;
+    border-top: 1px solid var(--section-background-color);
+    cursor: pointer;
+    transition: var(--main-transtion);
+}
+.main-content.viewmedicines .list ul li:hover{
+    background-color: #fafafa;
+    color: var(--main-color);
+}
+.main-content.viewmedicines .list ul li a{
+    display: block;
+    margin-top: 10px;
+    color: #777;
+    font-weight: bold;
+    transition: var(--main-transtion);
+    font-size: 14px;
+}
+.main-content.viewmedicines .list ul li a:hover{
+    color: var(--main-color);
+    margin-left: 10px;
+}
+/* start mega-medicine */
+.main-content.viewmedicines .medicines-mega ul{
+    transition: var(--main-transtion);
+}
+.main-content.viewmedicines .medicines-mega ul li{
+    display: flex;
+    position: relative;
+    justify-content: space-evenly;
+}
+.main-content.viewmedicines .medicines-mega ul li i{
+    position: absolute;
+    left: -5px;
+    top: 35px;
+    color: var(--main-color);
+    animation: moving-arrow var(--main-transtion) linear infinite;
+}
+.main-content.viewmedicines .medicines-mega{
+    margin-top: 10px;
+    color: #777;
+    font-weight: bold;
+    font-size: var(--main-Font-size);
+    transition: var(--main-transtion);
+    font-size: 14px;
+}
+.mega-menu{
+    display: none;
+}
+.main-content.viewmedicines .medicines-mega:hover .mega-menu{
+    display: block;
+}
+/* End mega-medicines */
+/* start mega-order */
+.main-content.viewmedicines .order-mega ul li{
+    display: flex;
+    position: relative;
+    justify-content: space-evenly;
+}
+.main-content.viewmedicines .order-mega ul li i{
+    position: absolute;
+    left: -5px;
+    top: 35px;
+    color: var(--main-color);
+    animation: moving-arrow var(--main-transtion) linear infinite;
+}
+.main-content.viewmedicines .order-mega{
+    margin-top: 10px;
+    color: #777;
+    font-weight: bold;
+    font-size: var(--main-Font-size);
+    transition: var(--main-transtion);
+    font-size: 14px;
+}
+
+.main-content.viewmedicines .order-mega:hover .mega-menu{
+    transition: var(--main-transtion);
+    display: block;
+}
+/* End mega-order */
+/* Start mega-customer */
+.main-content.viewmedicines .customer-mega ul li{
+    display: flex;
+    position: relative;
+    justify-content: space-evenly;
+}
+.main-content.viewmedicines .customer-mega ul li i{
+    position: absolute;
+    left: -5px;
+    top: 35px;
+    color: var(--main-color);
+    animation: moving-arrow var(--main-transtion) linear infinite;
+}
+.main-content.viewmedicines .customer-mega{
+    margin-top: 10px;
+    color: #777;
+    font-weight: bold;
+    font-size: var(--main-Font-size);
+    transition: var(--main-transtion);
+    font-size: 14px;
+}
+
+.main-content.viewmedicines .customer-mega:hover .mega-menu{
+    display: block;
+}
+/* End mega-cutomer */
+.main-content.viewmedicines .container{
+    padding-top: 30px;
+    padding-bottom: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+    gap: 20px;   
+}
+.main-content.viewmedicines .box{
+    box-shadow: 0 2px 15px rgb(0 0 0 / 20%);
+    width: 100%;
+    height: 400px;
+    transition: var(--main-transtion);
+    z-index: 2;
+}
+@media (max-width:991px) {
+    .main-content.viewmedicines .box{
+        box-shadow: 0 4px 15px rgb(0 0 0 / 40%);    
+    }
+}
+.main-content.viewmedicines .box:hover{
+    transform: translateY(-10px);
+    box-shadow: 0 2px 15px rgb(0 0 0 / 40%);    
+}
+.main-content.viewmedicines .box img{
+    width: 100%;
+    height: 200px;
+}
+.main-content.viewmedicines .box .content{
+    padding: 10px 20px;
+    border-top: 1px solid #E6E6E7;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+}
+.main-content.viewmedicines .box .content h3{
+    color: var(--main-color);
+    font-weight: bold;
+    font-style: italic;
+}
+.main-content.viewmedicines .box .content p{
+    align-items: center;
+    text-align: center;
+    margin-top: 0;
+    font-size: 14px;
+    color:#777 ;
+    line-height: 1.3;
+}
+.main-content.viewmedicines .box .info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+}
+.main-content.viewmedicines .box .info a{
+    color: var(--main-color);
+    padding-left: 10px;
+    width: 30px;
+}
+.main-content.viewmedicines .box .info i{
+    color: var(--main-color);
+    width: 30px;
+}
+.main-content.viewmedicines .box:hover .info i{
+    animation: moving-arrow var(--main-transtion) linear infinite;
+
+}
+/* Start table customer  */
+.table{
+    margin-top: 20px;
+    min-height: 600px;
+}
+.table.medicines thead tr{
+    background-color: var(--section-background-color);
+}
+.table.medicines thead tr td{
+    max-width: 250px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 2px 15px rgb(0 0 0 / 20%);
+    height: auto;
+}
+@media (max-width:767px) {
+    .table.medicines .active{
+        display: none;
+    }
+}
+.table.medicines tbody tr th{
+    max-width: 250px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 2px 15px rgb(0 0 0 / 20%);
+    height: auto;
+    border-bottom: 1px solid var(--section-background-color);
+}
+.table.medicines tbody tr td{
+    max-width: 250px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 2px 15px rgb(0 0 0 / 20%);
+    height: auto;
+    border-bottom: 1px solid var(--section-background-color);
+}
+/* End table customer  */
+/* End Main Content */
+
+
+
+
+/* Start Footer main medicines */
+.footer.viewmedicines{
+    background-color: var(--main-color);
+    width: 100%;
+    height: 50px;
+}
+.footer.viewmedicines p{
+    text-align: center;
+    font-size: var(--main-Font-size);
+    margin: 0;
+    color: white;
+    padding-top: 18px;
+}
+/* End Footer main medicines */
