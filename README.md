@@ -1,0 +1,1 @@
+# KR_Pharmacy_mangement
