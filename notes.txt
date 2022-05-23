@@ -1,0 +1,133 @@
+تبيع الصيدلية الأدوية وتصنعها حسب الوصفات الطبية. يمكن أن تكون الأدوية من أنواع مختلفة:
+
+1) الأدوية الجاهزة: أقراص ، مراهم ، صبغات.
+
+2) تصنعها صيدلية: جرعات ، مراهم ، محاليل ، صبغات ، مساحيق.
+
+ينعكس الاختلاف في أنواع الأدوية في مجموعة السمات التي تميزها. الجرعات والمساحيق مصنوعة للاستخدام الداخلي فقط ، ومحاليل للاستخدام الخارجي والداخلي وللخلط مع الأدوية والمراهم الأخرى للاستخدام الخارجي فقط. تختلف الأدوية أيضًا في طريقة التحضير ووقت التحضير. تصنع المساحيق والمراهم بخلط مكونات مختلفة. في تصنيع المحاليل والمخاليط ، لا يتم خلط المكونات فحسب ، بل يتم ترسيتها أيضًا ، يليها ترشيح الدواء ، مما يزيد من وقت التصنيع.
+
+يوجد في الصيدلية دليل لتقنيات تحضير الأدوية المختلفة. يشير إلى: رقم تعريف التقنية واسم الدواء وطريقة تحضيره. في المستودع ، يتم تعيين معيار مهم لجميع الأدوية ، أي عندما تكون أي مادة في المستودع أقل من المعيار الحرج ، يتم تقديم الطلبات لهذه المواد ويتم إحضارها بشكل عاجل من مستودعات الأدوية بالجملة.
+
+لكي تصنع الصيدلية الدواء ، يجب على المريض إحضار وصفة طبية من الطبيب المعالج. يجب أن تشير الوصفة إلى: الاسم الكامل وتوقيع وختم الطبيب والاسم الكامل وعمر وتشخيص المريض ، وكذلك كمية الدواء وطريقة تناوله. يعطي المريض الوصفة للمسجل ، ويقبل الأمر ويتحقق من وجود أي مكونات من الدواء المطلوب. إذا لم تكن جميع المكونات متوفرة ، يقوم أمين السجل بتقديم طلبات إلى تجار الأدوية بالجملة ويسجل اسم المشتري غير الخاضع للخدمة ورقم هاتفه وعنوانه لإبلاغه بموعد تسليم المكونات الضرورية. يقوم مثل هذا المريض بتجديد دليل الطلبات - هذه هي الطلبات التي هي في طور التحضير ، مع ملاحظة أنه لا تتوفر جميع المكونات للأمر. في حالة وجود جميع المكونات ، يتم حجزها لدواء المريض. يدفع المشتري ثمن العقار ، وترجع الوصفة له مع ملاحظة عن وقت الصنع. يقوم المريض أيضًا بتجديد دليل الطلبات في الإنتاج. في الوقت المحدد ، يأتي المريض ويتلقى الدواء النهائي حسب نفس الوصفة. يقوم هذا المريض بتجديد قائمة الطلبات المقدمة.
+
+يتم الاحتفاظ بإحصائيات حول حجم الأدوية المستخدمة. بعد فترة زمنية معينة ، يتم إجراء جرد للمستودع. يتم ذلك لتحديد ما إذا كانت هناك أدوية ذات معدل حرج أو ما إذا كانت مدة الصلاحية أو النقص قد انتهت صلاحيتها.
+
+الطلبات في نظام المعلومات:
+
+1) احصل على معلومات حول العملاء الذين لم يحضروا لاستلام طلباتهم في الوقت المحدد ، وإجمالي عدد العملاء.true (statu order)
+	
+2) الحصول على قائمة وإجمالي عدد العملاء الذين ينتظرون وصول الأدوية التي يحتاجونها في المستودع بشكل عام وفئة الأدوية المحددة.true (statu order)
+
+3) الحصول على قائمة الأدوية العشرة الأكثر استخدامًا بشكل عام وفي فئة الأدوية المشار إليها.true (counter sales)
+
+4) احسب كمية المواد المشار إليها التي تم استخدامها خلال الفترة المحددة
+
+5) الحصول على قائمة وإجمالي عدد العملاء الذين طلبوا عقارًا معينًا أو أنواعًا معينة من الأدوية في فترة معينة.
+
+6) الحصول على قائمة وأنواع الأدوية التي وصلت إلى حدها الحرج أو نفذت. 
+
+7) الحصول على قائمة الأدوية ذات الحد الأدنى من المخزون في المستودع ككل وفئة الأدوية المحددة.
+
+8) احصل على قائمة كاملة وإجمالي عدد الطلبات في الإنتاج.true (statu order)[A,B,C,D]
+
+9) الحصول على قائمة كاملة وإجمالي عدد الأدوية المطلوبة لطلبات في الإنتاج.true (statu order)[A,B,C,D]
+
+10) الحصول على جميع التقنيات الخاصة بتحضير الأدوية من الأنواع المحددة والأدوية المحددة والأدوية الموجودة في دفتر الطلبات في الإنتاج. 
+
+11) الحصول على معلومات عن أسعار الدواء المشار إليه في شكله النهائي وحجم وأسعار جميع المكونات المطلوبة لهذا الدواء. 
+
+12) الحصول على معلومات حول العملاء المنتظمين للأدوية.true (type_Cust)[A,B,C]
+
+13) الحصول على معلومات حول دواء معين (نوعه ، طريقة تحضيره ، أسماء جميع مكوناته ، أسعاره ، كميته في المخزون).true (med_type -... - ....- ...- ....)
+
+
+
+----------------------------------
+The pharmacy sells medicines and makes them according to prescriptions. Medicines can be of different types:
+
+1) finished medicines: tablets, ointments, tinctures;
+
+2) manufactured by a pharmacy: potions, ointments, solutions, tinctures, powders.
+
+The difference in drug types is reflected in the set of attributes that characterize them. Potions and powders are made for internal use only, solutions for external, internal use and for mixing with other medicines and ointments for external use only. Medicines also differ in the method of preparation and in the time of preparation. Powders and ointments are made by mixing various components. In the manufacture of solutions and mixtures, the ingredients are not only mixed, but also defended, followed by filtration of the drug, which increases the manufacturing time.
+
+In the pharmacy there is a directory of technologies for the preparation of various drugs. It indicates: the identification number of the technology, the name of the medicine and the method of preparation itself. In the warehouse, a critical norm is set for all medicines, i.e. when any substance in the warehouse is less than the critical norm, then applications are made for these substances and they are urgently brought from wholesale warehouses of medicines.
+
+In order for a pharmacy to make a medicine, the patient must bring a prescription from the attending physician. The prescription must indicate: full name, signature and seal of the doctor, full name, age and diagnosis of the patient, as well as the amount of the medicine and the method of application. The patient gives the prescription to the registrar, he accepts the order and checks if there are any components of the ordered medicine. If not all components are in stock, the registrar makes requests to the drug wholesalers and records the name, phone number and address of the unserved buyer in order to inform him when the necessary components will be delivered. Such a patient replenishes the order directory - these are the orders that are in the process of preparation, with a note that not all components are available for the order. If all components are present, they are reserved for the patient's medicine. The buyer pays the price of the drug, the prescription is returned to him with a note about the time of manufacture. The patient also replenishes the directory of orders in production. At the appointed time, the patient comes and receives the finished medicine according to the same prescription. Such a patient replenishes the list of given orders.
+
+Statistics are kept on the volume of medicines used. After a certain period of time, an inventory of the warehouse is carried out. This is done in order to determine if there are drugs with a critical norm or if the shelf life or shortage has expired.
+
+Requests in the information system:
+
+1) Get information about customers who did not show up to pick up their order at their scheduled time, and the total number of customers.(table order column (statu))
+
+2) Obtain a list and the total number of buyers who are waiting for the arrival of the medicines they need in the warehouse in general and for the specified category of medicines.(table order column(statu))
+
+3) Obtain a list of the ten most commonly used medicines in general and in the indicated category of medicines.(table medicine factory , pharmcy column (counting_sales))
+
+4) Calculate how much of the indicated substances was used during the indicated period.(table medicine factory , pharmacy columns (date - quantity_buy - quantity_Day))
+
+5) Obtain a list and the total number of customers who ordered a certain drug or certain types of drugs in a given period.
+
+6) Obtain a list and types of drugs that have reached their critical limit or run out.(table medicine factory , pharmacy column(quantity_Remaining))
+
+7) Get a list of medicines with a minimum stock in the warehouse as a whole and for the specified category of medicines.(table medicine factory , pharmacy columns (quantity_Remaining - minimum_quantity)
+
+8) Get a complete list and total number of orders in production. (table order column (statu)[A,B,C,D])
+
+9) Obtain a complete list and total number of drugs required for orders in production.(table order column (statu)[A,B,C,D])
+
+10) Get all the technologies for the preparation of medicines of the specified types, specific medicines, medicines that are in the order book in production.(table medicine_content column (method)
+
+11) Obtain information about the prices of the indicated drug in finished form, the volume and prices of all components required for this drug.
+
+12) Get information about regular customers of medicines.
+
+13) Get information about a specific medicine (its type, method of preparation, names of all components, prices, its quantity in stock).
+
+
+
+
+--------------------------------------------------
+72(3)Аптека продает медикаменты и изготавливает их по рецептам.
+Лекарства могут быть разных типов:
+1) готовые лекарства: таблетки, мази, настойки;
+2) изготовляемые аптекой: микстуры, мази, растворы, настойки, порошки.
+Различие в типах лекарств отражается в наборе атрибутов, их характеризующих. Микстуры и порошки изготавливаются только для внутреннего применения, растворы для наружного, внутреннего применения и для смешивания с другими лекарствами и мази только для наружного применения. Лекарства различны также по способу приготовления и по времени приготовления. 
+Порошки и мази изготавливаются смешиванием различных компонент. 
+При изготовлении растворов и микстур ингредиенты не только смешивают, но и отстаивают с последующей фильтрацией лекарства, что увеличивает время изготовления.
+В аптеке существует справочник технологий приготовления различных лекарств. 
+В нем указываются: идентификационный номер технологии, название лекарства и сам способ приготовления. На складе на все медикаменты устанавливается критическая норма, т.е. когда какого-либо вещества на складе меньше критической нормы, то составляются заявки на данные вещества и их в срочном порядке привозят с оптовых складов медикаментов.
+
+Для изготовления аптекой лекарства больной должен принести рецепт от лечащего врача. В рецепте должно быть указано: ФИО, подпись и печать врача, ФИО, возраст и диагноз пациента, а также количество лекарства и способ применения. Больной отдает рецепт регистратору, он принимает заказ и смотрит, есть ли компоненты заказываемого лекарства. Если не все компоненты имеются в наличии, регистратор делает заявки на оптовые склады лекарств и фиксирует ФИО, телефон и адрес необслуженного покупателя, чтобы сообщить ему, когда доставят нужные компоненты. Такой больной пополняет справочник заказов – это те заказы, которые находятся в процессе приготовления, с пометкой, что не все компоненты есть для заказа. Если все компоненты имеются, то они резервируются для лекарства больного. Покупатель выплачивает цену лекарства, ему возвращается рецепт с пометкой о времени изготовления. Больной также пополняет справочник заказов в производстве. В назначенное время больной приходит и по тому же рецепту получает готовое лекарство. Такой больной пополняет список отданных заказов.
+
+Ведется статистика по объемам используемых медикаментов. Через определенный промежуток времени производится инвентаризация склада. Это делается для того, чтобы определить, есть ли лекарства с критической нормой или вышел срок хранения или недостача.
+
+Запросы в информационной системе:
+
+1) Получите сведения о покупателях, которые не пришли забрать свой заказ в назначенное им время, и общее число покупателей.
+
+2) Получите перечень и общее число покупателей, которые ждут прибытия на склад нужных им медикаментов в целом и по указанной категории медикаментов.
+
+3) Получите перечень десяти наиболее часто используемых медикаментов в целом и в указанной категории медикаментов.
+
+4) Подсчитайте, какой объем указанных веществ использован за указанный период.
+
+5) Получите перечень и общее число покупателей, заказывавших определенное лекарство или определенные типы лекарств за данный период.
+
+6) Получите перечень и типы лекарств, достигших своей критической нормы или закончившихся.
+
+7) Получите перечень лекарств с минимальным запасом на складе в целом и по указанной категории медикаментов.
+
+8) Получите полный перечень и общее число заказов, находящихся в производстве.
+
+9) Получите полный перечень и общее число препаратов, требующихся заказам, находящимся в производстве.
+
+10) Получите все технологии приготовления лекарств указанных типов, конкретных лекарств, лекарств, находящихся в справочнике заказов в производстве.
+
+11) Получите сведения о ценах на указанное лекарство в готовом виде, об объеме и ценах на все компоненты, требующиеся для этого лекарства.
+
+12) Получите сведения о постоянных клиентах медикаментов.
+
+13) Получите сведения о конкретном лекарстве (его тип, способ приготовления, названия всех компонент, цены, его количество на складе).
+
